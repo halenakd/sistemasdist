@@ -14,8 +14,8 @@ class Node:
 
     def run(self):
         
-        client = Client("224.3.29.71", 5000, 'Cli/')
-        server = Server("224.3.29.71", 5000, 'Ser/')
+        client = Client("224.3.29.71", 5000, 'names/')
+        server = Server("224.3.29.71", 5000, 'names/')
 
         event = Event()
         

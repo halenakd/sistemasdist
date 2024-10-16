@@ -76,16 +76,19 @@ class Client:
                 get_data = json.dumps({'action': 'get', 'file_name': file_name})
                 sock.sendto(get_data.encode(), self.multicast_group)
 
-                try:
-                    data, server = sock.recvfrom(1024)
-                    if data:
-                        decoded_data = data.decode()
-                        print(f"Dados decodificados: {decoded_data}")  # Verificando os dados decodificados
-                    else:
-                        print("Nenhum dado recebido.")
-                    
-                except socket.timeout:
-                    print('--> Timeout esperando resposta :(')
+                while True:
+                    print ('waiting to receive')
+                    try:
+                        data, server = sock.recvfrom(1024)
+                        if data:
+                            decoded_data = data.decode()
+                            print(f"Dados decodificados: {decoded_data}")  # Verificando os dados decodificados
+                        else:
+                            print("Nenhum dado recebido.")
+                        
+                    except socket.timeout:
+                        print('--> Timeout esperando resposta :(')
+                        break
 
             else:
                 print("Opção inválida. Tente novamente.")
