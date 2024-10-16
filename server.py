@@ -15,14 +15,8 @@ class Server:
         self.hash_table = {}  # Hash table para armazenar os GUIDs -> mapear os dados
         self.load_hash_table_from_file() 
 
-    def put(self, file_name, data, sock, address):
+    def put(self, guid, file_name, data, sock, address):
         """Armazena dados usando um GUID e atualiza a tabela hash."""
-        guid = str(uuid.uuid4())
-
-        file_path = os.path.join(self.server_dir, guid)
-        with open(file_path, 'w') as file:
-            file.write(data)
-        print(f"Dados armazenados em: {guid}")
 
         # Atualiza a tabela hash
         self.hash_table[file_name] = guid
@@ -118,7 +112,7 @@ class Server:
 
             # Manipula solicitações para armazenar ou recuperar dados
             if message['action'] == 'put':
-                self.put(message['file_name'], message['data'], sock, address)
+                self.put(message['guid'], message['file_name'], message['data'], sock, address)
             elif message['action'] == 'get':
                 response_data = self.get(message['file_name'])
                 if response_data:

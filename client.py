@@ -59,8 +59,15 @@ class Client:
             if action == '1':
                 file_name = input("Digite o nome do arquivo para criar: ")
                 data = input("Digite os dados do arquivo: ")
+
+                guid = str(uuid.uuid4())
+
+                file_path = os.path.join(self.client_dir, guid)
+                with open(file_path, 'w') as file:
+                    file.write(data)
+                print(f"Dados armazenados em: {guid}")
                 
-                put_data = json.dumps({'action': 'put', 'file_name': file_name, 'data': data})
+                put_data = json.dumps({'action': 'put', 'guid': guid, 'file_name': file_name, 'data': data})
                 print(f"Enviando dados: {put_data}")  # Verificando os dados que serão enviados
                 sock.sendto(put_data.encode(), self.multicast_group)
 
