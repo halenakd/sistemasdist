@@ -80,14 +80,13 @@ class Client:
                     print ('waiting to receive')
                     try:
                         data, server = sock.recvfrom(1024)
-                        if data:
-                            decoded_data = data.decode()
-                            print(f"Dados decodificados: {decoded_data}")  # Verificando os dados decodificados
-                        else:
-                            print("Nenhum dado recebido.")
                         
                     except socket.timeout:
                         print('--> Timeout esperando resposta :(')
+                        break
+                    else:
+                        decoded_data = data.decode()
+                        print(f"Dados decodificados: {decoded_data}")  # Verificando os dados decodificados
                         break
 
             else:
