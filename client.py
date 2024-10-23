@@ -80,13 +80,28 @@ class Client:
                     print ('waiting to receive')
                     try:
                         data, server = sock.recvfrom(1024)
-                        
+                    
                     except socket.timeout:
                         print('--> Timeout esperando resposta :(')
                         break
+                    
                     else:
-                        decoded_data = data.decode()
-                        print(f"Dados decodificados: {decoded_data}")  # Verificando os dados decodificados
+                        decoded_data = json.loads(data.decode())  # Decodificar a resposta JSON do servidor
+                        
+                        # Verifica se houve um erro na resposta
+                        if 'error' in decoded_data:
+                            print(f"Erro: {decoded_data['error']}")
+                        else:
+                            # Caso os dados do arquivo sejam recebidos corretamente
+                            guid = decoded_data['guid']  # O GUID será enviado de volta junto com os dados
+                            file_data = decoded_data['data']
+                            
+                            # Salva o arquivo no diretório local do cliente
+                            file_path = os.path.join(self.client_dir, guid)
+                            with open(file_path, 'w') as file:
+                                file.write(file_data)
+                            print(f"Arquivo {file_name} baixado e salvo como {file_path}")
+
                         break
 
             else:

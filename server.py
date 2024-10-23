@@ -34,13 +34,15 @@ class Server:
                 with open(file_path, 'r') as file:
                     data = file.read()
                 print(f"Dados recuperados para o arquivo {file_name}")
-                return data
+            
+                # Retorna os dados em um formato JSON, incluindo o GUID e o conteúdo do arquivo
+                return json.dumps({'guid': guid, 'data': data})
             else:
                 print(f"Arquivo não encontrado.")
-                return None
+                return json.dumps({'error': 'Arquivo não encontrado'})
         else:
-            print(f"GUID {file_name} não encontrado na tabela hash.")
-            return None
+            print(f"Arquivo{file_name} não encontrado na tabela hash.")
+            return json.dumps({'error': 'Arquivo não encontrado'})
 
     def load_hash_table_from_file(self):
         """Carrega a tabela hash de um arquivo JSON, se existir."""
